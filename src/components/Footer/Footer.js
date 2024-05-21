@@ -4,8 +4,8 @@ import './Footer.css';
 
 const Footer = () => {
   return (
-    <footer className="footer">
-      <p>&copy; 2024 Exam System. All rights reserved.</p>
+    <footer className="footer mt-5">
+      <p>&copy; {new Date().getFullYear()} Exam System. All rights reserved.</p>
     </footer>
   );
 };
