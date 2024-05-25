@@ -10,6 +10,7 @@ const LoginForm = ({ onLogin }) => {
   const [registrationNumber, setRegistrationNumber] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
+  const [success,setSuccess] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
   const validate = () => {
@@ -33,19 +34,21 @@ const LoginForm = ({ onLogin }) => {
     setErrors({});
 
     try {
-      const response = await axios.post('http://localhost:5000/api/login', {
+      const payload = {
         registration_number: registrationNumber,
-        password,
-      });
-
-      onLogin(response.data); // Handle successful login response
+        password: password,
+      };
+      const response = await axios.post('http://localhost:5000/api/login', payload);
+      setSuccess(response.data.msg);
+      console.log(success);
+      onLogin(response.data);
     } catch (err) {
       if (err.response && err.response.data) {
         setErrors(err.response.data);
       } else {
         setErrors({ global: 'An unexpected error occurred. Please try again later.' });
       }
-    }
+    }    
   };
 
   return (
@@ -75,6 +78,8 @@ const LoginForm = ({ onLogin }) => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+          </div>
+          <div>
             <FontAwesomeIcon 
               icon={showPassword ? faEyeSlash : faEye} 
               onClick={() => setShowPassword(!showPassword)}
@@ -82,6 +87,7 @@ const LoginForm = ({ onLogin }) => {
             />
           </div>
           {errors.password && <p className="error">{errors.password}</p>}
+          {success && <p className="success">{success}</p>}
         </div>
         <button type="submit" className="btn btn-primary btn-block">Login</button>
       </form>
