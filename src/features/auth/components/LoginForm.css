@@ -65,6 +65,14 @@ body {
   display: -webkit-box;
 }
 
+.success {
+  color: hsl(121, 83%, 61%);
+  font-size: 14px;
+  white-space: nowrap; /* Prevents wrapping */
+  overflow: hidden; /* Hides any content that overflows */
+  text-overflow: ellipsis; /* Displays an ellipsis (...) to indicate text overflow */
+}
+
 .btn-primary {
   background-color: #3498db;
   border: none;
