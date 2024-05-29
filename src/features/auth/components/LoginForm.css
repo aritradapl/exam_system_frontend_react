@@ -68,9 +68,10 @@ body {
 .success {
   color: hsl(121, 83%, 61%);
   font-size: 14px;
-  white-space: nowrap; /* Prevents wrapping */
-  overflow: hidden; /* Hides any content that overflows */
-  text-overflow: ellipsis; /* Displays an ellipsis (...) to indicate text overflow */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-top: 10px;
 }
 
 .btn-primary {

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
@@ -12,6 +13,7 @@ const LoginForm = ({ onLogin }) => {
   const [errors, setErrors] = useState({});
   const [success,setSuccess] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const validate = () => {
     const validationErrors = {};
@@ -39,11 +41,19 @@ const LoginForm = ({ onLogin }) => {
         password: password,
       };
       const response = await axios.post('http://localhost:5000/api/login', payload);
-      setSuccess(response.data.msg);
-      console.log(success);
-      onLogin(response.data);
+      if(response.status == 200){
+        setSuccess(response.data.msg);
+        onLogin(response.data);
+        setTimeout(() => {
+          navigate('/login-otp');
+        }, 2000);
+      }
     } catch (err) {
       if (err.response && err.response.data) {
+        console.log(err.response.status);
+        if(err.response.status == 400 ){
+          setErrors({ global: 'Invalid Credentials' });
+        }
         setErrors(err.response.data);
       } else {
         setErrors({ global: 'An unexpected error occurred. Please try again later.' });
@@ -55,7 +65,7 @@ const LoginForm = ({ onLogin }) => {
     <div className="login-form-container">
       {/* Use the user icon image */}
       <img src={userIcon} alt="User Icon" className="user-icon" />
-      {errors.global && <p className="error">{errors.global}</p>}
+      {errors.global && <div className='alert alert-danger'>{errors.global}</div>}
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <input
